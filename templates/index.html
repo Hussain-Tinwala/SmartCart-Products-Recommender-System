@@ -3,135 +3,300 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ecommerce Recommendation System</title>
+    <title>SmartCart | AI Recommendations</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-</head>
-<style>
-     body {
-            background-color: #f8f9fa;
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CORE STYLES --- */
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #FAFAFA;
+            color: #0F172A;
+            -webkit-font-smoothing: antialiased;
         }
+
+        /* --- NAVBAR --- */
         .navbar {
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.85) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 15px 0;
+            transition: all 0.3s ease;
         }
-        .container {
-            margin-top: 50px;
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: #0F172A !important;
+            letter-spacing: -0.5px;
+        }
+        .nav-link {
+            font-weight: 600;
+            color: #475569 !important;
+            margin: 0 10px;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        .nav-link:hover { color: #3B82F6 !important; }
+
+        /* --- BUTTONS --- */
+        .btn-primary {
+            background-color: #2563EB;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 28px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #1D4ED8;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+        }
+        .btn-outline-primary {
+            border: 2px solid #E2E8F0;
+            color: #0F172A;
+            border-radius: 50px;
+            padding: 8px 26px;
+            font-weight: 600;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-primary:hover {
+            border-color: #CBD5E1;
+            background: #F1F5F9;
+            color: #0F172A;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero-wrap {
+            padding: 100px 20px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .hero-container {
+            position: relative;
+            height: 65vh;
+            min-height: 500px;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .video-background {
-            width: 100%;
-            height: 400px; /* Set the height of the video here */
-            object-fit: cover; /* Ensure the video covers the entire container */
+            position: absolute;
+            top: 50%; left: 50%;
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto;
+            transform: translateX(-50%) translateY(-50%);
+            z-index: 1;
+            object-fit: cover;
         }
-        .nav-link:hover {
-            color: orange !important; /* Change text color on hover */
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 2;
         }
-        .nav-link.btn {
-            border-radius: 5px; /* Add rounded corners to buttons */
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+        .hero-content h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .hero-content p {
+            font-size: 1.25rem;
+            font-weight: 500;
+            opacity: 0.9;
         }
 
+        /* --- PRODUCT CARDS --- */
+        .section-header {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #0F172A;
+            margin: 60px 0 40px;
+        }
+        .card {
+            border: 1px solid #F1F5F9;
+            border-radius: 24px;
+            background: #FFFFFF;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #E2E8F0;
+        }
+        .card-img-top {
+            height: 240px;
+            object-fit: contain;
+            padding: 20px;
+            background: #F8FAFC;
+        }
+        .card-body { padding: 24px; }
+        .card-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            line-height: 1.4;
+            color: #0F172A;
+            margin-bottom: 8px;
+        }
+        .card-brand {
+            color: #64748B;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- MODALS & INPUTS --- */
         .modal-content {
-            background-color: #fff; /* Set modal content background color */
-            color: #000; /* Set modal content text color */
+            border: none;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
-        .modal-content.dark {
-            background-color: #000; /* Set modal content background color for dark theme */
-            color: #fff; /* Set modal content text color for dark theme */
+        .modal-header { border-bottom: 1px solid #F1F5F9; padding: 24px 32px; }
+        .modal-body { padding: 32px; }
+        .form-control {
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 14px 20px;
+            font-size: 1rem;
+            color: #0F172A;
+            background-color: #F8FAFC;
+            transition: all 0.2s;
         }
-</style>
+        .form-control:focus {
+            background-color: #FFFFFF;
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            background-color: #FFFFFF;
+            border-top: 1px solid #F1F5F9;
+            padding: 80px 0 40px;
+            margin-top: 80px;
+        }
+        .footer h5 { font-weight: 700; color: #0F172A; margin-bottom: 24px; }
+        .footer a { color: #64748B; transition: color 0.2s; }
+        .footer a:hover { color: #2563EB; text-decoration: none; }
+    </style>
+</head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand mx-auto" href="#">Ecommerce Recommendation System</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="#"><i class="fas fa-home"></i> Home</a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link" href="#" id="settingsLink"><i class="fas fa-cog"></i> Settings</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link btn btn-outline-primary mr-2" href="#" data-toggle="modal" data-target="#signupModal">Sign Up</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link btn btn-primary" href="#" data-toggle="modal" data-target="#signinModal">Sign In</a>
-      </li>
-    </ul>
+<nav class="navbar navbar-expand-lg fixed-top">
+  <div class="container-fluid px-4 px-md-5">
+      <a class="navbar-brand" href="#">
+          <i class="fas fa-box text-primary mr-2"></i>SmartCart
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+        <i class="fas fa-bars text-dark"></i>
+      </button>
+      
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav align-items-center">
+          <li class="nav-item active"><a class="nav-link" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" id="settingsLink">Settings</a></li>
+          <li class="nav-item mx-2">
+            <a class="btn btn-outline-primary" href="#" data-toggle="modal" data-target="#signupModal">Sign Up</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-primary text-white" href="#" data-toggle="modal" data-target="#signinModal">Sign In</a>
+          </li>
+        </ul>
+      </div>
   </div>
 </nav>
 
-
-<!-- Video -->
-<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <video class="video-background" autoplay loop muted>
-        <source src="static/v.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
+<div class="hero-wrap">
+    <div class="hero-container">
+        <video class="video-background" autoplay loop muted playsinline>
+            <source src="static/v.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Curated for You.</h1>
+            <p class="mb-5">Discover products matched to your taste using intelligent modeling.</p>
+            <a href="main" class="btn btn-primary btn-lg px-5 py-3" style="font-size: 1.15rem;">
+                Explore Engine <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
     </div>
-  </div>
-</div>
-
-<!-- Go To Main Page Button -->
-<div class="text-center mt-5">
-  <a  href="main" class="btn btn-primary btn-lg">Go To Main Page</a>
 </div>
 
 {% if signup_message %}
-<h5 style="margin-left:42%;margin-top:10px; text:bold;">{{signup_message}}</h5>
+<div class="container mt-4">
+    <div class="alert alert-success alert-dismissible fade show text-center border-0 shadow-sm" role="alert" style="border-radius: 16px; background: #ECFDF5; color: #065F46;">
+      <i class="fas fa-check-circle mr-2"></i> <strong>Success!</strong> {{signup_message}}
+      <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+    </div>
+</div>
 {% endif %}
 
-<!--trending recommendations-->
-<!-- Products -->
-<div class="container mt-5">
-  <h2 class="text-center mb-4">Trending Products</h2>
+<div class="container pb-5">
+  <h2 class="section-header text-center">Trending Now</h2>
+  
   <div class="row mt-4">
     {% for index, product in trending_products.iterrows() %}
     <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
       <div class="card">
-          <img src="{{ random_product_image_urls[index] }}" class="card-img-top" alt="{{ product['Name'] }}" style="height: 200px;">
-        <div class="card-body">
-          <h5 class="card-title">{{ truncate(product['Name'],12) }}</h5>
-          <p class="card-text">Brand: {{ product['Brand'] }}</p>
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#productModal{{ index }}">Buy Now</button>
+          <img src="{{ random_product_image_urls[index] }}" class="card-img-top" alt="Product">
+        <div class="card-body d-flex flex-column">
+          <div class="card-brand mb-1">{{ product['Brand'] }}</div>
+          <h5 class="card-title mb-4">{{ truncate(product['Name'], 45) }}</h5>
+          <button type="button" class="btn btn-outline-primary mt-auto w-100" data-toggle="modal" data-target="#productModal{{ index }}">
+              Quick View
+          </button>
         </div>
       </div>
     </div>
-    <!-- Modal -->
-    <div class="modal fade" id="productModal{{ index }}" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
+    
+    <div class="modal fade" id="productModal{{ index }}" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="productModalLabel">{{ product['Name'] }}</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+          <div class="modal-header pb-0 border-0">
+            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
           </div>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-md-4">
-                  <img src="{{ random_product_image_urls[index] }}" class="img-fluid" alt="{{ product['Name'] }}" style="height: 200px;">
+          <div class="modal-body pt-0">
+            <div class="row align-items-center">
+              <div class="col-md-5 mb-4 mb-md-0 text-center">
+                  <div style="background: #F8FAFC; border-radius: 20px; padding: 20px;">
+                      <img src="{{ random_product_image_urls[index] }}" class="img-fluid" style="max-height: 300px; mix-blend-mode: multiply;">
+                  </div>
               </div>
-              <div class="col-md-8">
-                <p><strong>Brand:</strong> {{ product['Brand'] }}</p>
-                <!-- Add other product details here -->
-                <!-- Example: -->
-                <p><strong>Review Count:</strong> {{ product['ReviewCount'] }}</p>
-                <p><strong>Rating:</strong> {{ product['Rating'] }}</p>
-                <p><strong>Price:</strong> {{ random_price }}</p>
-                <!-- Add more details as needed -->
+              <div class="col-md-7 pl-md-4">
+                <p class="text-uppercase font-weight-bold text-primary mb-2" style="letter-spacing: 1px; font-size: 0.85rem;">{{ product['Brand'] }}</p>
+                <h3 class="font-weight-bold mb-3 text-dark">{{ product['Name'] }}</h3>
+                <h2 class="mb-4 font-weight-bold text-dark">${{ random_price }}.00</h2>
+                
+                <div class="d-flex align-items-center mb-4 text-secondary">
+                    <div class="mr-4"><i class="fas fa-star text-warning mr-1"></i> <strong>{{ product['Rating'] }}</strong>/5</div>
+                    <div><i class="fas fa-comment mr-1"></i> {{ product['ReviewCount'] }} Reviews</div>
+                </div>
+                
+                <button type="button" class="btn btn-primary btn-lg w-100 py-3 rounded-pill"><i class="fas fa-shopping-bag mr-2"></i> Add to Bag</button>
               </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Add to Cart</button>
           </div>
         </div>
       </div>
@@ -140,197 +305,88 @@
   </div>
 </div>
 
-
-
-<!-- Bootstrap modal for sign up -->
-<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade" id="signupModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="signupModalLabel">Sign Up</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-header border-0 pb-0">
+        <h4 class="modal-title font-weight-bold">Create an Account</h4>
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
       </div>
       <div class="modal-body">
         <form action="/signup" method="post">
-          <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
-            <input type="text" class="form-control" id="username" name="username" required>
+          <div class="form-group mb-4">
+            <label class="font-weight-bold text-secondary mb-2">Username</label>
+            <input type="text" class="form-control" name="username" required>
           </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" required>
+          <div class="form-group mb-4">
+            <label class="font-weight-bold text-secondary mb-2">Email Address</label>
+            <input type="email" class="form-control" name="email" required>
           </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" name="password" required>
+          <div class="form-group mb-5">
+            <label class="font-weight-bold text-secondary mb-2">Password</label>
+            <input type="password" class="form-control" name="password" required>
           </div>
-          <button type="submit" class="btn btn-primary">Sign Up</button>
+          <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill">Create Account</button>
         </form>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Bootstrap modal for sign in -->
-<div class="modal fade" id="signinModal" tabindex="-1" aria-labelledby="signinModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade" id="signinModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="signinModalLabel">Sign In</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-header border-0 pb-0">
+        <h4 class="modal-title font-weight-bold">Welcome Back</h4>
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
       </div>
       <div class="modal-body">
         <form action="/signin" method="post">
-          <div class="mb-3">
-            <label for="signinUsername" class="form-label">Username</label>
-            <input type="text" class="form-control" id="signinUsername" name="signinUsername" required>
+          <div class="form-group mb-4">
+            <label class="font-weight-bold text-secondary mb-2">Username</label>
+            <input type="text" class="form-control" name="signinUsername" required>
           </div>
-          <div class="mb-3">
-            <label for="signinPassword" class="form-label">Password</label>
-            <input type="password" class="form-control" id="signinPassword" name="signinPassword" required>
+          <div class="form-group mb-5">
+            <label class="font-weight-bold text-secondary mb-2">Password</label>
+            <input type="password" class="form-control" name="signinPassword" required>
           </div>
-          <button type="submit" class="btn btn-primary">Sign In</button>
+          <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill">Sign In</button>
         </form>
       </div>
     </div>
   </div>
 </div>
 
-
-
-<!-- Settings Modal -->
-<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="settingsModalLabel">Settings</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <h5>Choose Theme:</h5>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="theme" id="defaultTheme" value="default" checked>
-          <label class="form-check-label" for="defaultTheme">
-            Default
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="theme" id="blackTheme" value="black">
-          <label class="form-check-label" for="blackTheme">
-            Black Theme
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="theme" id="greenTheme" value="green">
-          <label class="form-check-label" for="greenTheme">
-            Green Theme
-          </label>
-        </div>
-        <hr>
-        <h5>Zoom:</h5>
-        <button type="button" class="btn btn-primary mr-2" id="zoomIn">Zoom In</button>
-        <button type="button" class="btn btn-primary" id="zoomOut">Zoom Out</button>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="applyTheme">Apply</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-<script>
-  // Handle click on Settings link to open the modal
-  document.getElementById('settingsLink').addEventListener('click', function() {
-    $('#settingsModal').modal('show');
-  });
-
-  // Handle theme apply button click
-  document.getElementById('applyTheme').addEventListener('click', function() {
-    // Get the selected theme value
-    var selectedTheme = document.querySelector('input[name="theme"]:checked').value;
-
-    // Apply the selected theme
-    if (selectedTheme === 'black') {
-      document.body.style.backgroundColor = 'black';
-      document.body.style.color = 'white';
-    } else if (selectedTheme === 'green') {
-      document.body.style.backgroundColor = 'green';
-      document.body.style.color = 'white';
-    } else {
-      // Default theme
-      document.body.style.backgroundColor = '#f8f9fa';
-      document.body.style.color = 'black';
-    }
-
-    // Close the modal
-    $('#settingsModal').modal('hide');
-  });
-
-  // Handle zoom in button click
-  document.getElementById('zoomIn').addEventListener('click', function() {
-    document.body.style.zoom = "115%";
-  });
-
-  // Handle zoom out button click
-  document.getElementById('zoomOut').addEventListener('click', function() {
-    document.body.style.zoom = "100%";
-  });
-</script>
-
-
-
-<!--footer-->
-<footer class="footer bg-dark text-white">
-    <div class="container" style="padding-top:20px;">
+<footer class="footer">
+    <div class="container">
         <div class="row">
-            <div class="col-md-3 col-sm-6">
-                <h5>About Us</h5>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla pretium risus quis urna maximus, eget vestibulum risus vestibulum.</p>
+            <div class="col-md-5 pr-md-5 mb-4">
+                <h5 class="font-weight-bold"><i class="fas fa-box text-primary mr-2"></i>SmartCart</h5>
+                <p class="text-secondary mt-3">Refining your shopping experience through intelligent, data-driven recommendations.</p>
             </div>
-            <div class="col-md-3 col-sm-6">
-                <h5>Quick Links</h5>
+            <div class="col-md-2 col-6 mb-4">
+                <h6 class="font-weight-bold text-dark mb-4">Explore</h6>
                 <ul class="list-unstyled">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li class="mb-3"><a href="#">Home</a></li>
+                    <li class="mb-3"><a href="#">Trending</a></li>
                 </ul>
             </div>
-            <div class="col-md-3 col-sm-6">
-                <h5>Support</h5>
+            <div class="col-md-2 col-6 mb-4">
+                <h6 class="font-weight-bold text-dark mb-4">Support</h6>
                 <ul class="list-unstyled">
-                    <li><a href="#">FAQ</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
+                    <li class="mb-3"><a href="#">FAQ</a></li>
+                    <li class="mb-3"><a href="#">Contact</a></li>
                 </ul>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <h5>Contact Us</h5>
-                <address>
-                    <strong>Company Name</strong><br>
-                    123 Street, City<br>
-                    Country<br>
-                    <i class="fas fa-phone"></i> Phone: +1234567890<br>
-                    <i class="fas fa-envelope"></i> Email: info@example.com
-                </address>
             </div>
         </div>
-        <div class="row mt-3">
-            <div class="col-md-12">
-                <hr class="bg-light">
-                <p class="text-center">© 2024 Ecommerce Recommendation System. All Rights Reserved.</p>
-            </div>
+        <div class="border-top pt-4 mt-2 text-center text-secondary small">
+            &copy; 2024 SmartCart Inc. All Rights Reserved.
         </div>
     </div>
 </footer>
 
-
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -1,0 +1,917 @@
+index.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecommerce Recommendation System</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- GLOBAL STYLES --- */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f6;
+            color: #2d3436;
+            transition: background-color 0.3s ease;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: rgba(255, 255, 255, 0.9) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 15px 0;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, #6c5ce7, #a29bfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-link {
+            font-weight: 500;
+            margin: 0 5px;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #6c5ce7 !important;
+        }
+
+        /* --- BUTTONS --- */
+        .btn-primary {
+            background: linear-gradient(45deg, #6c5ce7, #a29bfe);
+            border: none;
+            border-radius: 30px;
+            padding: 10px 25px;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+        }
+        .btn-outline-primary {
+            border-color: #6c5ce7;
+            color: #6c5ce7;
+            border-radius: 30px;
+            padding: 10px 25px;
+            font-weight: 500;
+        }
+        .btn-outline-primary:hover {
+            background-color: #6c5ce7;
+            border-color: #6c5ce7;
+        }
+
+        /* --- HERO VIDEO SECTION --- */
+        .hero-container {
+            position: relative;
+            height: 60vh;
+            min-height: 400px;
+            width: 95%;
+            margin: 30px auto;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        .video-background {
+            position: absolute;
+            top: 50%; left: 50%;
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto;
+            transform: translateX(-50%) translateY(-50%);
+            z-index: -1;
+            object-fit: cover;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* Darkens video for text readability */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+        .hero-overlay h1 {
+            font-weight: 700;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* --- PRODUCT CARDS --- */
+        .section-title {
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 4px;
+            background: linear-gradient(45deg, #6c5ce7, #a29bfe);
+            bottom: -10px;
+            left: 25%;
+            border-radius: 2px;
+        }
+        .card {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            background: #fff;
+            height: 100%;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+        .card-img-top {
+            object-fit: cover;
+            height: 220px;
+            transition: transform 0.5s ease;
+        }
+        .card:hover .card-img-top {
+            transform: scale(1.05);
+        }
+        .card-body {
+            padding: 25px;
+        }
+        .card-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .text-muted {
+            color: #b2bec3 !important;
+            font-size: 0.9rem;
+        }
+
+        /* --- MODALS --- */
+        .modal-content {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+        }
+        .modal-header {
+            border-bottom: 1px solid #f1f2f6;
+            padding: 20px 30px;
+        }
+        .modal-body {
+            padding: 30px;
+        }
+        .modal-footer {
+            border-top: none;
+            padding: 20px 30px;
+        }
+        .form-control {
+            border-radius: 10px;
+            padding: 12px 20px;
+            border: 1px solid #dfe4ea;
+            box-shadow: none;
+        }
+        .form-control:focus {
+            border-color: #6c5ce7;
+            box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25);
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            background-color: #1e272e !important;
+            padding: 60px 0 20px;
+            margin-top: 100px;
+        }
+        .footer h5 {
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #f1f2f6;
+        }
+        .footer a {
+            color: #a4b0be;
+            transition: 0.3s;
+        }
+        .footer a:hover {
+            color: #6c5ce7;
+            text-decoration: none;
+            padding-left: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+  <div class="container-fluid px-4">
+      <a class="navbar-brand" href="#"><i class="fas fa-shopping-bag mr-2"></i>SmartCart AI</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav align-items-center">
+          <li class="nav-item active">
+            <a class="nav-link" href="#"><i class="fas fa-home"></i> Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="settingsLink"><i class="fas fa-cog"></i> Settings</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="btn btn-outline-primary" href="#" data-toggle="modal" data-target="#signupModal">Sign Up</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-primary text-white" href="#" data-toggle="modal" data-target="#signinModal">Sign In</a>
+          </li>
+        </ul>
+      </div>
+  </div>
+</nav>
+
+<div class="hero-container" style="margin-top: 100px;"> <video class="video-background" autoplay loop muted>
+        <source src="static/v.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="hero-overlay">
+        <h1>Discover What's Trending</h1>
+        <p class="lead mb-4">AI-powered recommendations tailored just for you.</p>
+        <a href="main" class="btn btn-primary btn-lg px-5 py-3" style="font-size: 1.2rem; border-radius: 50px;">
+            Launch App Engine <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+    </div>
+</div>
+
+{% if signup_message %}
+<div class="container mt-4">
+    <div class="alert alert-success alert-dismissible fade show text-center" role="alert" style="border-radius: 15px;">
+      <strong>Success!</strong> {{signup_message}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+</div>
+{% endif %}
+
+<div class="container mt-5 pt-4">
+  <div class="text-center">
+      <h2 class="section-title">Trending Products</h2>
+  </div>
+  
+  <div class="row mt-5">
+    {% for index, product in trending_products.iterrows() %}
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-5">
+      <div class="card">
+          <img src="{{ random_product_image_urls[index] }}" class="card-img-top" alt="{{ product['Name'] }}">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{ truncate(product['Name'], 40) }}</h5>
+          <p class="card-text text-muted mb-4"><i class="fas fa-tag mr-1"></i> {{ product['Brand'] }}</p>
+          <button type="button" class="btn btn-primary mt-auto w-100" data-toggle="modal" data-target="#productModal{{ index }}">View Details</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal fade" id="productModal{{ index }}" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title font-weight-bold">{{ product['Name'] }}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row align-items-center">
+              <div class="col-md-5 text-center mb-3 mb-md-0">
+                  <img src="{{ random_product_image_urls[index] }}" class="img-fluid rounded shadow-sm" alt="{{ product['Name'] }}" style="max-height: 300px; object-fit: cover;">
+              </div>
+              <div class="col-md-7">
+                <h4 class="text-primary font-weight-bold mb-3">${{ random_price }}.00</h4>
+                <p class="mb-2"><strong><i class="fas fa-building text-muted mr-2"></i>Brand:</strong> {{ product['Brand'] }}</p>
+                <p class="mb-2"><strong><i class="fas fa-comment text-muted mr-2"></i>Reviews:</strong> {{ product['ReviewCount'] }}</p>
+                <p class="mb-4"><strong><i class="fas fa-star text-warning mr-2"></i>Rating:</strong> {{ product['Rating'] }} / 5.0</p>
+                <button type="button" class="btn btn-primary btn-lg w-100"><i class="fas fa-shopping-cart mr-2"></i> Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="modal fade" id="signupModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <h4 class="modal-title font-weight-bold" id="signupModalLabel">Create Account</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/signup" method="post">
+          <div class="form-group mb-4">
+            <label class="font-weight-bold text-muted">Username</label>
+            <input type="text" class="form-control form-control-lg" id="username" name="username" required placeholder="Enter username">
+          </div>
+          <div class="form-group mb-4">
+            <label class="font-weight-bold text-muted">Email Address</label>
+            <input type="email" class="form-control form-control-lg" id="email" name="email" required placeholder="name@example.com">
+          </div>
+          <div class="form-group mb-4">
+            <label class="font-weight-bold text-muted">Password</label>
+            <input type="password" class="form-control form-control-lg" id="password" name="password" required placeholder="Create a password">
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg w-100">Sign Up</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="signinModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <h4 class="modal-title font-weight-bold" id="signinModalLabel">Welcome Back</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/signin" method="post">
+          <div class="form-group mb-4">
+            <label class="font-weight-bold text-muted">Username</label>
+            <input type="text" class="form-control form-control-lg" id="signinUsername" name="signinUsername" required placeholder="Enter your username">
+          </div>
+          <div class="form-group mb-4">
+            <label class="font-weight-bold text-muted">Password</label>
+            <input type="password" class="form-control form-control-lg" id="signinPassword" name="signinPassword" required placeholder="Enter your password">
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg w-100">Sign In</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h5 class="modal-title font-weight-bold">Display Settings</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6 class="font-weight-bold mb-3">Choose Theme:</h6>
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="radio" name="theme" id="defaultTheme" value="default" checked>
+          <label class="form-check-label" for="defaultTheme">Default Light</label>
+        </div>
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="radio" name="theme" id="blackTheme" value="black">
+          <label class="form-check-label" for="blackTheme">Dark Mode</label>
+        </div>
+        <div class="form-check mb-4">
+          <input class="form-check-input" type="radio" name="theme" id="greenTheme" value="green">
+          <label class="form-check-label" for="greenTheme">High Contrast Green</label>
+        </div>
+        
+        <hr>
+        <h6 class="font-weight-bold mb-3 mt-4">Screen Zoom:</h6>
+        <div class="d-flex">
+            <button type="button" class="btn btn-outline-primary mr-2 flex-fill" id="zoomOut"><i class="fas fa-search-minus"></i> Zoom Out</button>
+            <button type="button" class="btn btn-outline-primary flex-fill" id="zoomIn"><i class="fas fa-search-plus"></i> Zoom In</button>
+        </div>
+      </div>
+      <div class="modal-footer border-0 pt-0">
+        <button type="button" class="btn btn-primary w-100" id="applyTheme">Apply Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-sm-6 mb-4">
+                <h5 class="mb-4"><i class="fas fa-shopping-bag mr-2"></i>SmartCart AI</h5>
+                <p class="text-muted">Discover the perfect products with our advanced AI recommendation engine. Shopping made intelligent, simple, and tailored just for you.</p>
+            </div>
+            <div class="col-md-2 col-sm-6 mb-4">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#">Home</a></li>
+                    <li class="mb-2"><a href="#">About Us</a></li>
+                    <li class="mb-2"><a href="#">Services</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2 col-sm-6 mb-4">
+                <h5>Legal</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#">FAQ</a></li>
+                    <li class="mb-2"><a href="#">Terms of Service</a></li>
+                    <li class="mb-2"><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <h5>Contact Us</h5>
+                <address class="text-muted">
+                    <p class="mb-2"><i class="fas fa-map-marker-alt mr-2"></i> 123 Tech Boulevard, Innovation City</p>
+                    <p class="mb-2"><i class="fas fa-phone mr-2"></i> +1 (555) 123-4567</p>
+                    <p class="mb-2"><i class="fas fa-envelope mr-2"></i> support@smartcart.ai</p>
+                </address>
+            </div>
+        </div>
+        <div class="row mt-4 pt-4 border-top" style="border-color: rgba(255,255,255,0.1) !important;">
+            <div class="col-md-12 text-center text-muted">
+                <p>© 2024 SmartCart AI Recommendation System. All Rights Reserved.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+  // Handle click on Settings link to open the modal
+  document.getElementById('settingsLink').addEventListener('click', function(e) {
+    e.preventDefault();
+    $('#settingsModal').modal('show');
+  });
+
+  // Handle theme apply button click
+  document.getElementById('applyTheme').addEventListener('click', function() {
+    var selectedTheme = document.querySelector('input[name="theme"]:checked').value;
+    if (selectedTheme === 'black') {
+      document.body.style.backgroundColor = '#121212';
+      document.body.style.color = 'white';
+    } else if (selectedTheme === 'green') {
+      document.body.style.backgroundColor = '#0b3d0b';
+      document.body.style.color = '#e6ffe6';
+    } else {
+      document.body.style.backgroundColor = '#f4f7f6';
+      document.body.style.color = '#2d3436';
+    }
+    $('#settingsModal').modal('hide');
+  });
+
+  // Handle zoom in button click
+  document.getElementById('zoomIn').addEventListener('click', function() {
+    document.body.style.zoom = "115%";
+  });
+
+  // Handle zoom out button click
+  document.getElementById('zoomOut').addEventListener('click', function() {
+    document.body.style.zoom = "100%";
+  });
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+main.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Recommendation Engine</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f6;
+            color: #2d3436;
+            transition: background-color 0.3s ease;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: rgba(255, 255, 255, 0.9) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 15px 0;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, #6c5ce7, #a29bfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-link {
+            font-weight: 500;
+            margin: 0 5px;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover { color: #6c5ce7 !important; }
+
+        /* --- BUTTONS --- */
+        .btn-primary {
+            background: linear-gradient(45deg, #6c5ce7, #a29bfe);
+            border: none;
+            border-radius: 30px;
+            padding: 10px 25px;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+        }
+        .btn-outline-primary {
+            border-color: #6c5ce7;
+            color: #6c5ce7;
+            border-radius: 30px;
+            padding: 10px 25px;
+            font-weight: 500;
+        }
+        .btn-outline-primary:hover {
+            background-color: #6c5ce7; border-color: #6c5ce7;
+        }
+
+        /* --- SEARCH HERO SECTION --- */
+        .search-hero {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            padding: 100px 0 60px 0;
+            border-radius: 0 0 40px 40px;
+            margin-bottom: 50px;
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.2);
+        }
+        .search-hero h1 {
+            color: white;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .search-box {
+            background: white;
+            padding: 15px;
+            border-radius: 50px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        .search-box .form-control {
+            border: none;
+            box-shadow: none;
+            font-size: 1.1rem;
+            padding: 15px 25px;
+        }
+        .search-box .btn-primary {
+            padding: 12px 40px;
+            font-size: 1.1rem;
+        }
+
+        /* --- PRODUCT CARDS --- */
+        .section-title {
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 4px;
+            background: linear-gradient(45deg, #6c5ce7, #a29bfe);
+            bottom: -10px;
+            left: 25%;
+            border-radius: 2px;
+        }
+        .card {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            background: #fff;
+            height: 100%;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+        .card-img-top {
+            object-fit: cover;
+            height: 220px;
+            transition: transform 0.5s ease;
+        }
+        .card:hover .card-img-top { transform: scale(1.05); }
+        .card-body { padding: 25px; }
+        .card-title { font-weight: 600; font-size: 1.1rem; }
+        .text-muted { color: #b2bec3 !important; font-size: 0.9rem; }
+
+        /* --- MODALS & FOOTER (Same as Index) --- */
+        .modal-content { border: none; border-radius: 20px; box-shadow: 0 15px 50px rgba(0,0,0,0.2); }
+        .modal-header { border-bottom: 1px solid #f1f2f6; padding: 20px 30px; }
+        .modal-body { padding: 30px; }
+        .footer { background-color: #1e272e !important; padding: 60px 0 20px; margin-top: 100px; color: #a4b0be; }
+        .footer h5 { font-weight: 600; margin-bottom: 20px; color: #f1f2f6; }
+        .footer a { color: #a4b0be; transition: 0.3s; }
+        .footer a:hover { color: #6c5ce7; text-decoration: none; padding-left: 5px; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+  <div class="container-fluid px-4">
+      <a class="navbar-brand" href="index"><i class="fas fa-shopping-bag mr-2"></i>SmartCart AI</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav align-items-center">
+          <li class="nav-item">
+            <a class="nav-link" href="index"><i class="fas fa-home"></i> Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="settingsLink"><i class="fas fa-cog"></i> Settings</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="btn btn-outline-primary" href="#" data-toggle="modal" data-target="#signupModal">Sign Up</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-primary text-white" href="#" data-toggle="modal" data-target="#signinModal">Sign In</a>
+          </li>
+        </ul>
+      </div>
+  </div>
+</nav>
+
+<div class="search-hero">
+    <div class="container text-center">
+        <h1 class="display-4 mb-4">What are you looking for?</h1>
+        <p class="text-white mb-5 lead">Our AI will find the most relevant products based on your needs.</p>
+        
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form action="/recommendations" method="post" class="search-box d-flex align-items-center">
+                    <i class="fas fa-search text-muted ml-3"></i>
+                    <input type="text" class="form-control" name="prod" placeholder="E.g., Nail Polish, Face Wash, Serum..." required>
+                    <input type="number" class="form-control border-left pl-3" name="nbr" placeholder="Amount (e.g. 5)" style="max-width: 150px;" required>
+                    <button class="btn btn-primary ml-2"><i class="fas fa-magic mr-2"></i>Discover</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if message %}
+<div class="container mt-4">
+    <div class="alert alert-warning alert-dismissible fade show text-center shadow-sm" role="alert" style="border-radius: 15px;">
+      <i class="fas fa-exclamation-circle mr-2"></i> {{message}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+</div>
+{% endif %}
+
+{% if content_based_rec is defined and not content_based_rec.empty %}
+<div class="container mt-5">
+  <div class="text-center">
+      <h2 class="section-title">Your AI Recommendations</h2>
+  </div>
+  
+  <div class="row mt-5">
+    {% for index, product in content_based_rec.iterrows() %}
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-5">
+      <div class="card">
+          <img src="{{ product['ImageURL'] }}" class="card-img-top" alt="{{ product['Name'] }}">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{ truncate(product['Name'], 40) }}</h5>
+          <p class="card-text text-muted mb-4"><i class="fas fa-tag mr-1"></i> {{ product['Brand'] }}</p>
+          <button type="button" class="btn btn-primary mt-auto w-100" data-toggle="modal" data-target="#productModal{{ index }}">View Details</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal fade" id="productModal{{ index }}" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title font-weight-bold">{{ product['Name'] }}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row align-items-center">
+              <div class="col-md-5 text-center mb-3 mb-md-0">
+                  <img src="{{ product['ImageURL'] }}" class="img-fluid rounded shadow-sm" alt="{{ product['Name'] }}" style="max-height: 300px; object-fit: cover;">
+              </div>
+              <div class="col-md-7">
+                <h4 class="text-primary font-weight-bold mb-3">${{ random_price }}.00</h4>
+                <p class="mb-2"><strong><i class="fas fa-building text-muted mr-2"></i>Brand:</strong> {{ product['Brand'] }}</p>
+                <p class="mb-2"><strong><i class="fas fa-comment text-muted mr-2"></i>Reviews:</strong> {{ product['ReviewCount'] }}</p>
+                <p class="mb-4"><strong><i class="fas fa-star text-warning mr-2"></i>Rating:</strong> {{ product['Rating'] }} / 5.0</p>
+                <button type="button" class="btn btn-primary btn-lg w-100"><i class="fas fa-shopping-cart mr-2"></i> Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<div class="modal fade" id="signupModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <h4 class="modal-title font-weight-bold" id="signupModalLabel">Create Account</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/signup" method="post">
+          <div class="form-group mb-4">
+            <label class="font-weight-bold text-muted">Username</label>
+            <input type="text" class="form-control form-control-lg" id="username" name="username" required placeholder="Enter username">
+          </div>
+          <div class="form-group mb-4">
+            <label class="font-weight-bold text-muted">Email Address</label>
+            <input type="email" class="form-control form-control-lg" id="email" name="email" required placeholder="name@example.com">
+          </div>
+          <div class="form-group mb-4">
+            <label class="font-weight-bold text-muted">Password</label>
+            <input type="password" class="form-control form-control-lg" id="password" name="password" required placeholder="Create a password">
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg w-100">Sign Up</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="signinModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <h4 class="modal-title font-weight-bold" id="signinModalLabel">Welcome Back</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/signin" method="post">
+          <div class="form-group mb-4">
+            <label class="font-weight-bold text-muted">Username</label>
+            <input type="text" class="form-control form-control-lg" id="signinUsername" name="signinUsername" required placeholder="Enter your username">
+          </div>
+          <div class="form-group mb-4">
+            <label class="font-weight-bold text-muted">Password</label>
+            <input type="password" class="form-control form-control-lg" id="signinPassword" name="signinPassword" required placeholder="Enter your password">
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg w-100">Sign In</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h5 class="modal-title font-weight-bold">Display Settings</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6 class="font-weight-bold mb-3">Choose Theme:</h6>
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="radio" name="theme" id="defaultTheme" value="default" checked>
+          <label class="form-check-label" for="defaultTheme">Default Light</label>
+        </div>
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="radio" name="theme" id="blackTheme" value="black">
+          <label class="form-check-label" for="blackTheme">Dark Mode</label>
+        </div>
+        <div class="form-check mb-4">
+          <input class="form-check-input" type="radio" name="theme" id="greenTheme" value="green">
+          <label class="form-check-label" for="greenTheme">High Contrast Green</label>
+        </div>
+        
+        <hr>
+        <h6 class="font-weight-bold mb-3 mt-4">Screen Zoom:</h6>
+        <div class="d-flex">
+            <button type="button" class="btn btn-outline-primary mr-2 flex-fill" id="zoomOut"><i class="fas fa-search-minus"></i> Zoom Out</button>
+            <button type="button" class="btn btn-outline-primary flex-fill" id="zoomIn"><i class="fas fa-search-plus"></i> Zoom In</button>
+        </div>
+      </div>
+      <div class="modal-footer border-0 pt-0">
+        <button type="button" class="btn btn-primary w-100" id="applyTheme">Apply Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-sm-6 mb-4">
+                <h5 class="mb-4"><i class="fas fa-shopping-bag mr-2"></i>SmartCart AI</h5>
+                <p class="text-muted">Discover the perfect products with our advanced AI recommendation engine. Shopping made intelligent, simple, and tailored just for you.</p>
+            </div>
+            <div class="col-md-2 col-sm-6 mb-4">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#">Home</a></li>
+                    <li class="mb-2"><a href="#">About Us</a></li>
+                    <li class="mb-2"><a href="#">Services</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2 col-sm-6 mb-4">
+                <h5>Legal</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#">FAQ</a></li>
+                    <li class="mb-2"><a href="#">Terms of Service</a></li>
+                    <li class="mb-2"><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <h5>Contact Us</h5>
+                <address class="text-muted">
+                    <p class="mb-2"><i class="fas fa-map-marker-alt mr-2"></i> 123 Tech Boulevard, Innovation City</p>
+                    <p class="mb-2"><i class="fas fa-phone mr-2"></i> +1 (555) 123-4567</p>
+                    <p class="mb-2"><i class="fas fa-envelope mr-2"></i> support@smartcart.ai</p>
+                </address>
+            </div>
+        </div>
+        <div class="row mt-4 pt-4 border-top" style="border-color: rgba(255,255,255,0.1) !important;">
+            <div class="col-md-12 text-center text-muted">
+                <p>© 2026 SmartCart AI Recommendation System. All Rights Reserved.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+  // Handle click on Settings link to open the modal
+  document.getElementById('settingsLink').addEventListener('click', function(e) {
+    e.preventDefault();
+    $('#settingsModal').modal('show');
+  });
+
+  // Handle theme apply button click
+  document.getElementById('applyTheme').addEventListener('click', function() {
+    var selectedTheme = document.querySelector('input[name="theme"]:checked').value;
+    if (selectedTheme === 'black') {
+      document.body.style.backgroundColor = '#121212';
+      document.body.style.color = 'white';
+    } else if (selectedTheme === 'green') {
+      document.body.style.backgroundColor = '#0b3d0b';
+      document.body.style.color = '#e6ffe6';
+    } else {
+      document.body.style.backgroundColor = '#f4f7f6';
+      document.body.style.color = '#2d3436';
+    }
+    $('#settingsModal').modal('hide');
+  });
+
+  // Handle zoom in button click
+  document.getElementById('zoomIn').addEventListener('click', function() {
+    document.body.style.zoom = "115%";
+  });
+
+  // Handle zoom out button click
+  document.getElementById('zoomOut').addEventListener('click', function() {
+    document.body.style.zoom = "100%";
+  });
+</script>
+
+</body>
+</html>
