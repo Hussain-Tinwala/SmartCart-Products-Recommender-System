@@ -13,7 +13,7 @@ train_data = pd.read_csv("models/clean_data.csv")
 
 # database configuration---------------------------------------
 app.secret_key = "alskdjfwoeieiurlskdjfslkdjf"
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:@localhost/ecom"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:@localhost/productsrecommender"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -41,11 +41,56 @@ def truncate(text, length):
         return text
 
 
+# def content_based_recommendations(train_data, item_name, top_n=10):
+#     # Check if the item name exists in the training data
+#     if item_name not in train_data['Name'].values:
+#         print(f"Item '{item_name}' not found in the training data.")
+#         return pd.DataFrame()
+
+#     # Create a TF-IDF vectorizer for item descriptions
+#     tfidf_vectorizer = TfidfVectorizer(stop_words='english')
+
+#     # Apply TF-IDF vectorization to item descriptions
+#     tfidf_matrix_content = tfidf_vectorizer.fit_transform(train_data['Tags'])
+
+#     # Calculate cosine similarity between items based on descriptions
+#     cosine_similarities_content = cosine_similarity(tfidf_matrix_content, tfidf_matrix_content)
+
+#     # Find the index of the item
+#     item_index = train_data[train_data['Name'] == item_name].index[0]
+
+#     # Get the cosine similarity scores for the item
+#     similar_items = list(enumerate(cosine_similarities_content[item_index]))
+
+#     # Sort similar items by similarity score in descending order
+#     similar_items = sorted(similar_items, key=lambda x: x[1], reverse=True)
+
+#     # Get the top N most similar items (excluding the item itself)
+#     top_similar_items = similar_items[1:top_n+1]
+
+#     # Get the indices of the top similar items
+#     recommended_item_indices = [x[0] for x in top_similar_items]
+
+#     # Get the details of the top similar items
+#     recommended_items_details = train_data.iloc[recommended_item_indices][['Name', 'ReviewCount', 'Brand', 'ImageURL', 'Rating']]
+
+#     return recommended_items_details
+
 def content_based_recommendations(train_data, item_name, top_n=10):
-    # Check if the item name exists in the training data
-    if item_name not in train_data['Name'].values:
-        print(f"Item '{item_name}' not found in the training data.")
+    # 1. Convert search query to lowercase for a case-insensitive search
+    search_query = str(item_name).lower()
+
+    # 2. Find any product names that contain the search query
+    matches = train_data[train_data['Name'].str.lower().str.contains(search_query, na=False)]
+
+    # 3. Check if we found any matches
+    if matches.empty:
+        print(f"Item containing '{item_name}' not found in the training data.")
         return pd.DataFrame()
+
+    # 4. Grab the exact name of the first product that matched the search
+    exact_item_name = matches.iloc[0]['Name']
+    print(f"Matched user search '{item_name}' to product: '{exact_item_name}'")
 
     # Create a TF-IDF vectorizer for item descriptions
     tfidf_vectorizer = TfidfVectorizer(stop_words='english')
@@ -56,8 +101,8 @@ def content_based_recommendations(train_data, item_name, top_n=10):
     # Calculate cosine similarity between items based on descriptions
     cosine_similarities_content = cosine_similarity(tfidf_matrix_content, tfidf_matrix_content)
 
-    # Find the index of the item
-    item_index = train_data[train_data['Name'] == item_name].index[0]
+    # Find the index of our matched item
+    item_index = train_data[train_data['Name'] == exact_item_name].index[0]
 
     # Get the cosine similarity scores for the item
     similar_items = list(enumerate(cosine_similarities_content[item_index]))
@@ -75,6 +120,8 @@ def content_based_recommendations(train_data, item_name, top_n=10):
     recommended_items_details = train_data.iloc[recommended_item_indices][['Name', 'ReviewCount', 'Brand', 'ImageURL', 'Rating']]
 
     return recommended_items_details
+
+
 # routes===============================================================================
 # List of predefined image URLs
 random_image_urls = [

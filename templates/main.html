@@ -78,7 +78,7 @@
 <!--trending recommendations-->
 <!--'Name', 'ReviewCount', 'Brand', 'ImageURL', 'Rating'-->
 <!-- Products -->
-{% if not content_based_rec.empty %}
+{% if content_based_rec is defined and not content_based_rec.empty %}
 <div class="container mt-5">
   <h2 class="text-center mb-4">Recommended Products</h2>
   <div class="row mt-4">
