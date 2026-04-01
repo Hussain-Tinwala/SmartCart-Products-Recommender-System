@@ -2,5 +2,4 @@ flask
 pandas
 numpy
 scikit-learn
-flask-sqlalchemy
-mysqlclient
+gunicorn
