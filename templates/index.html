@@ -9,194 +9,32 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* --- CORE STYLES --- */
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #FAFAFA;
-            color: #0F172A;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* --- NAVBAR --- */
-        .navbar {
-            background: rgba(255, 255, 255, 0.85) !important;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            padding: 15px 0;
-            transition: all 0.3s ease;
-        }
-        .navbar-brand {
-            font-weight: 800;
-            font-size: 1.4rem;
-            color: #0F172A !important;
-            letter-spacing: -0.5px;
-        }
-        .nav-link {
-            font-weight: 600;
-            color: #475569 !important;
-            margin: 0 10px;
-            font-size: 0.95rem;
-            transition: color 0.2s;
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #FAFAFA; color: #0F172A; -webkit-font-smoothing: antialiased; }
+        .navbar { background: rgba(255, 255, 255, 0.85) !important; backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0, 0, 0, 0.05); padding: 15px 0; }
+        .navbar-brand { font-weight: 800; font-size: 1.4rem; color: #0F172A !important; letter-spacing: -0.5px; }
+        .nav-link { font-weight: 600; color: #475569 !important; margin: 0 10px; font-size: 0.95rem; }
         .nav-link:hover { color: #3B82F6 !important; }
+        .btn-primary { background-color: #2563EB; border: none; border-radius: 50px; padding: 10px 28px; font-weight: 600; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); transition: all 0.3s ease; }
+        .btn-primary:hover { background-color: #1D4ED8; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3); }
+        .btn-outline-secondary { border-radius: 50px; padding: 8px 20px; font-weight: 600; }
+        
+        .hero-wrap { padding: 100px 20px 20px; max-width: 1400px; margin: 0 auto; }
+        .hero-container { position: relative; height: 65vh; min-height: 500px; border-radius: 32px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center; }
+        .video-background { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); z-index: 1; object-fit: cover; }
+        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.3); z-index: 2; }
+        .hero-content { position: relative; z-index: 3; text-align: center; color: white; padding: 0 20px; }
+        .hero-content h1 { font-size: 4.5rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 20px; text-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .hero-content p { font-size: 1.25rem; font-weight: 500; opacity: 0.9; }
 
-        /* --- BUTTONS --- */
-        .btn-primary {
-            background-color: #2563EB;
-            border: none;
-            border-radius: 50px;
-            padding: 10px 28px;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
-            transition: all 0.3s ease;
-        }
-        .btn-primary:hover {
-            background-color: #1D4ED8;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
-        }
-        .btn-outline-primary {
-            border: 2px solid #E2E8F0;
-            color: #0F172A;
-            border-radius: 50px;
-            padding: 8px 26px;
-            font-weight: 600;
-            background: transparent;
-            transition: all 0.3s ease;
-        }
-        .btn-outline-primary:hover {
-            border-color: #CBD5E1;
-            background: #F1F5F9;
-            color: #0F172A;
-        }
-
-        /* --- HERO SECTION --- */
-        .hero-wrap {
-            padding: 100px 20px 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        .hero-container {
-            position: relative;
-            height: 65vh;
-            min-height: 500px;
-            border-radius: 32px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .video-background {
-            position: absolute;
-            top: 50%; left: 50%;
-            min-width: 100%; min-height: 100%;
-            width: auto; height: auto;
-            transform: translateX(-50%) translateY(-50%);
-            z-index: 1;
-            object-fit: cover;
-        }
-        .hero-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            z-index: 2;
-        }
-        .hero-content {
-            position: relative;
-            z-index: 3;
-            text-align: center;
-            color: white;
-            padding: 0 20px;
-        }
-        .hero-content h1 {
-            font-size: 4.5rem;
-            font-weight: 800;
-            letter-spacing: -1.5px;
-            margin-bottom: 20px;
-            text-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        .hero-content p {
-            font-size: 1.25rem;
-            font-weight: 500;
-            opacity: 0.9;
-        }
-
-        /* --- PRODUCT CARDS --- */
-        .section-header {
-            font-size: 2.2rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            color: #0F172A;
-            margin: 60px 0 40px;
-        }
-        .card {
-            border: 1px solid #F1F5F9;
-            border-radius: 24px;
-            background: #FFFFFF;
-            overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            height: 100%;
-        }
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            border-color: #E2E8F0;
-        }
-        .card-img-top {
-            height: 240px;
-            object-fit: contain;
-            padding: 20px;
-            background: #F8FAFC;
-        }
+        .section-header { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.5px; color: #0F172A; margin: 60px 0 40px; }
+        .card { border: 1px solid #F1F5F9; border-radius: 24px; background: #FFFFFF; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); border-color: #E2E8F0; cursor: pointer; }
+        .card-img-top { height: 240px; object-fit: contain; padding: 20px; background: #F8FAFC; }
         .card-body { padding: 24px; }
-        .card-title {
-            font-weight: 700;
-            font-size: 1.1rem;
-            line-height: 1.4;
-            color: #0F172A;
-            margin-bottom: 8px;
-        }
-        .card-brand {
-            color: #64748B;
-            font-size: 0.9rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+        .card-title { font-weight: 700; font-size: 1.1rem; line-height: 1.4; color: #0F172A; margin-bottom: 8px; }
+        .card-brand { color: #64748B; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* --- MODALS & INPUTS --- */
-        .modal-content {
-            border: none;
-            border-radius: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        }
-        .modal-header { border-bottom: 1px solid #F1F5F9; padding: 24px 32px; }
-        .modal-body { padding: 32px; }
-        .form-control {
-            border: 1px solid #E2E8F0;
-            border-radius: 12px;
-            padding: 14px 20px;
-            font-size: 1rem;
-            color: #0F172A;
-            background-color: #F8FAFC;
-            transition: all 0.2s;
-        }
-        .form-control:focus {
-            background-color: #FFFFFF;
-            border-color: #3B82F6;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-        }
-
-        /* --- FOOTER --- */
-        .footer {
-            background-color: #FFFFFF;
-            border-top: 1px solid #F1F5F9;
-            padding: 80px 0 40px;
-            margin-top: 80px;
-        }
+        .footer { background-color: #FFFFFF; border-top: 1px solid #F1F5F9; padding: 80px 0 40px; margin-top: 80px; }
         .footer h5 { font-weight: 700; color: #0F172A; margin-bottom: 24px; }
         .footer a { color: #64748B; transition: color 0.2s; }
         .footer a:hover { color: #2563EB; text-decoration: none; }
@@ -206,8 +44,8 @@
 
 <nav class="navbar navbar-expand-lg fixed-top">
   <div class="container-fluid px-4 px-md-5">
-      <a class="navbar-brand" href="#">
-          <i class="fas fa-box text-primary mr-2"></i>SmartCart
+      <a class="navbar-brand" href="/">
+          <i class="fas fa-box text-primary mr-2"></i>SmartCart AI
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
         <i class="fas fa-bars text-dark"></i>
@@ -215,13 +53,12 @@
       
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav align-items-center">
-          <li class="nav-item active"><a class="nav-link" href="#">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="#" id="settingsLink">Settings</a></li>
-          <li class="nav-item mx-2">
-            <a class="btn btn-outline-primary" href="#" data-toggle="modal" data-target="#signupModal">Sign Up</a>
+          <li class="nav-item active"><a class="nav-link" href="/search"><i class="fas fa-search mr-1"></i> Search Engine</a></li>
+          <li class="nav-item ml-3">
+              <a href="/history" class="btn btn-outline-secondary btn-sm"><i class="fas fa-history"></i> History</a>
           </li>
-          <li class="nav-item">
-            <a class="btn btn-primary text-white" href="#" data-toggle="modal" data-target="#signinModal">Sign In</a>
+          <li class="nav-item ml-2">
+              <a href="/cart" class="btn btn-primary btn-sm"><i class="fas fa-shopping-bag"></i> Cart ({{ session.get('cart', [])|length }})</a>
           </li>
         </ul>
       </div>
@@ -237,146 +74,44 @@
         <div class="hero-content">
             <h1>Curated for You.</h1>
             <p class="mb-5">Discover products matched to your taste using intelligent modeling.</p>
-            <a href="main" class="btn btn-primary btn-lg px-5 py-3" style="font-size: 1.15rem;">
+            <a href="/search" class="btn btn-primary btn-lg px-5 py-3" style="font-size: 1.15rem;">
                 Explore Engine <i class="fas fa-arrow-right ml-2"></i>
             </a>
         </div>
     </div>
 </div>
 
-{% if signup_message %}
-<div class="container mt-4">
-    <div class="alert alert-success alert-dismissible fade show text-center border-0 shadow-sm" role="alert" style="border-radius: 16px; background: #ECFDF5; color: #065F46;">
-      <i class="fas fa-check-circle mr-2"></i> <strong>Success!</strong> {{signup_message}}
-      <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-    </div>
-</div>
-{% endif %}
-
 <div class="container pb-5">
-  <h2 class="section-header text-center">Trending Now</h2>
+  <h2 class="section-header text-center">Trending & Recommended</h2>
   
   <div class="row mt-4">
     {% for index, product in trending_products.iterrows() %}
+    {% set img_url = product['ImageURL'].split(' | ')[0] if product['ImageURL'] is string else 'https://via.placeholder.com/300' %}
     <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-      <div class="card">
-          <img src="{{ random_product_image_urls[index] }}" class="card-img-top" alt="Product">
-        <div class="card-body d-flex flex-column">
-          <div class="card-brand mb-1">{{ product['Brand'] }}</div>
-          <h5 class="card-title mb-4">{{ truncate(product['Name'], 45) }}</h5>
-          <button type="button" class="btn btn-outline-primary mt-auto w-100" data-toggle="modal" data-target="#productModal{{ index }}">
-              Quick View
-          </button>
-        </div>
-      </div>
-    </div>
-    
-    <div class="modal fade" id="productModal{{ index }}" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header pb-0 border-0">
-            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-          </div>
-          <div class="modal-body pt-0">
-            <div class="row align-items-center">
-              <div class="col-md-5 mb-4 mb-md-0 text-center">
-                  <div style="background: #F8FAFC; border-radius: 20px; padding: 20px;">
-                      <img src="{{ random_product_image_urls[index] }}" class="img-fluid" style="max-height: 300px; mix-blend-mode: multiply;">
-                  </div>
-              </div>
-              <div class="col-md-7 pl-md-4">
-                <p class="text-uppercase font-weight-bold text-primary mb-2" style="letter-spacing: 1px; font-size: 0.85rem;">{{ product['Brand'] }}</p>
-                <h3 class="font-weight-bold mb-3 text-dark">{{ product['Name'] }}</h3>
-                <h2 class="mb-4 font-weight-bold text-dark">${{ random_price }}.00</h2>
-                
-                <div class="d-flex align-items-center mb-4 text-secondary">
-                    <div class="mr-4"><i class="fas fa-star text-warning mr-1"></i> <strong>{{ product['Rating'] }}</strong>/5</div>
-                    <div><i class="fas fa-comment mr-1"></i> {{ product['ReviewCount'] }} Reviews</div>
-                </div>
-                
-                <button type="button" class="btn btn-primary btn-lg w-100 py-3 rounded-pill"><i class="fas fa-shopping-bag mr-2"></i> Add to Bag</button>
+      <a href="/product?name={{ product['Name']|urlencode }}" class="text-decoration-none text-dark">
+          <div class="card">
+              <img src="{{ img_url }}" class="card-img-top" alt="{{ product['Name'] }}">
+            <div class="card-body d-flex flex-column">
+              <div class="card-brand mb-1">{{ product['Brand'] }}</div>
+              <h5 class="card-title mb-3">{{ truncate(product['Name'], 45) }}</h5>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                  <span class="font-weight-bold" style="font-size: 1.2rem;">₹{{ (product['Name']|length % 60) * 80 + 499 }}</span>
+                  <span class="text-warning text-sm"><i class="fas fa-star"></i> {{ product['Rating'] }}</span>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+      </a>
     </div>
     {% endfor %}
   </div>
 </div>
 
-<div class="modal fade" id="signupModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header border-0 pb-0">
-        <h4 class="modal-title font-weight-bold">Create an Account</h4>
-        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-      </div>
-      <div class="modal-body">
-        <form action="/signup" method="post">
-          <div class="form-group mb-4">
-            <label class="font-weight-bold text-secondary mb-2">Username</label>
-            <input type="text" class="form-control" name="username" required>
-          </div>
-          <div class="form-group mb-4">
-            <label class="font-weight-bold text-secondary mb-2">Email Address</label>
-            <input type="email" class="form-control" name="email" required>
-          </div>
-          <div class="form-group mb-5">
-            <label class="font-weight-bold text-secondary mb-2">Password</label>
-            <input type="password" class="form-control" name="password" required>
-          </div>
-          <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill">Create Account</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="signinModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-sm">
-    <div class="modal-content">
-      <div class="modal-header border-0 pb-0">
-        <h4 class="modal-title font-weight-bold">Welcome Back</h4>
-        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-      </div>
-      <div class="modal-body">
-        <form action="/signin" method="post">
-          <div class="form-group mb-4">
-            <label class="font-weight-bold text-secondary mb-2">Username</label>
-            <input type="text" class="form-control" name="signinUsername" required>
-          </div>
-          <div class="form-group mb-5">
-            <label class="font-weight-bold text-secondary mb-2">Password</label>
-            <input type="password" class="form-control" name="signinPassword" required>
-          </div>
-          <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill">Sign In</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
 <footer class="footer">
     <div class="container">
-        <div class="row">
-            <div class="col-md-5 pr-md-5 mb-4">
-                <h5 class="font-weight-bold"><i class="fas fa-box text-primary mr-2"></i>SmartCart</h5>
+        <div class="row text-center">
+            <div class="col-12 mb-4">
+                <h5 class="font-weight-bold"><i class="fas fa-box text-primary mr-2"></i>SmartCart AI</h5>
                 <p class="text-secondary mt-3">Refining your shopping experience through intelligent, data-driven recommendations.</p>
-            </div>
-            <div class="col-md-2 col-6 mb-4">
-                <h6 class="font-weight-bold text-dark mb-4">Explore</h6>
-                <ul class="list-unstyled">
-                    <li class="mb-3"><a href="#">Home</a></li>
-                    <li class="mb-3"><a href="#">Trending</a></li>
-                </ul>
-            </div>
-            <div class="col-md-2 col-6 mb-4">
-                <h6 class="font-weight-bold text-dark mb-4">Support</h6>
-                <ul class="list-unstyled">
-                    <li class="mb-3"><a href="#">FAQ</a></li>
-                    <li class="mb-3"><a href="#">Contact</a></li>
-                </ul>
             </div>
         </div>
         <div class="border-top pt-4 mt-2 text-center text-secondary small">

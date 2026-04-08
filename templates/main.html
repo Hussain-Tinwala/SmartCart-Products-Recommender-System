@@ -1,3 +1,144 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search | SmartCart</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #FAFAFA; color: #0F172A; -webkit-font-smoothing: antialiased; }
+        .navbar { background: rgba(255, 255, 255, 0.85) !important; backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0, 0, 0, 0.05); padding: 15px 0; }
+        .navbar-brand { font-weight: 800; font-size: 1.4rem; color: #0F172A !important; letter-spacing: -0.5px; }
+        .nav-link { font-weight: 600; color: #475569 !important; margin: 0 10px; font-size: 0.95rem; }
+        .nav-link:hover { color: #3B82F6 !important; }
+
+        .btn-primary { background-color: #2563EB; border: none; border-radius: 50px; padding: 10px 28px; font-weight: 600; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); transition: all 0.3s ease; }
+        .btn-primary:hover { background-color: #1D4ED8; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3); }
+        .btn-outline-secondary { border-radius: 50px; padding: 8px 20px; font-weight: 600; }
+
+        .search-wrapper { background-color: #FFFFFF; border-bottom: 1px solid #F1F5F9; padding: 140px 0 80px; text-align: center; }
+        .search-title { font-size: 3rem; font-weight: 800; letter-spacing: -1px; color: #0F172A; margin-bottom: 15px; }
+        
+        .search-pill { background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 100px; padding: 8px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); margin: 40px auto 0; max-width: 700px; transition: box-shadow 0.3s ease; }
+        .search-pill:focus-within { box-shadow: 0 10px 30px -5px rgba(37, 99, 235, 0.15); border-color: #CBD5E1; }
+        .search-pill .form-control { border: none; background: transparent; font-size: 1.1rem; padding: 15px 25px; box-shadow: none !important; color: #0F172A; }
+        .search-pill .form-control::placeholder { color: #94A3B8; font-weight: 400; }
+
+        .section-header { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.5px; color: #0F172A; margin: 60px 0 40px; }
+        .card { border: 1px solid #F1F5F9; border-radius: 24px; background: #FFFFFF; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); transition: all 0.3s ease; height: 100%; }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); border-color: #E2E8F0; cursor: pointer; }
+        .card-img-top { height: 240px; object-fit: contain; padding: 20px; background: #F8FAFC; }
+        .card-body { padding: 24px; }
+        .card-title { font-weight: 700; font-size: 1.1rem; color: #0F172A; margin-bottom: 8px; line-height: 1.4; }
+        .card-brand { color: #64748B; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .footer { background-color: #FFFFFF; border-top: 1px solid #F1F5F9; padding: 80px 0 40px; margin-top: 80px; }
+        .footer h5 { font-weight: 700; color: #0F172A; margin-bottom: 24px; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg fixed-top">
+  <div class="container-fluid px-4 px-md-5">
+      <a class="navbar-brand" href="/">
+          <i class="fas fa-box text-primary mr-2"></i>SmartCart AI
+      </a>
+      <div class="collapse navbar-collapse justify-content-end">
+        <ul class="navbar-nav align-items-center">
+          <li class="nav-item">
+              <a class="nav-link" href="/"><i class="fas fa-home mr-1"></i> Home</a>
+          </li>
+          <li class="nav-item ml-3">
+              <a href="/history" class="btn btn-outline-secondary btn-sm"><i class="fas fa-history"></i> History</a>
+          </li>
+          <li class="nav-item ml-2">
+              <a href="/cart" class="btn btn-primary btn-sm"><i class="fas fa-shopping-bag"></i> Cart ({{ session.get('cart', [])|length }})</a>
+          </li>
+        </ul>
+      </div>
+  </div>
+</nav>
+
+<div class="search-wrapper">
+    <div class="container">
+        <h1 class="search-title">What are you looking for?</h1>
+        <p class="text-secondary" style="font-size: 1.1rem;">Search for a product or category, and we'll find the best matches.</p>
+        
+        <form action="/search" method="post" class="search-pill d-flex">
+            <div class="flex-grow-1 d-flex align-items-center">
+                <i class="fas fa-search text-secondary ml-4"></i>
+                <input type="text" class="form-control" name="query" placeholder="E.g., Running Shoes, Lotion, Skincare..." value="{{ query|default('') }}" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary ml-1" style="border-radius: 100px; padding: 0 40px;">
+                Search
+            </button>
+        </form>
+    </div>
+</div>
+
+{% if message %}
+<div class="container mt-5">
+    <div class="alert alert-warning alert-dismissible fade show text-center border-0 shadow-sm py-3" style="border-radius: 16px; background: #FFFBEB; color: #92400E; font-weight: 500;">
+      <i class="fas fa-exclamation-circle mr-2"></i> {{message}}
+      <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+    </div>
+</div>
+{% endif %}
+
+{% if search_results is defined and not search_results.empty %}
+<div class="container pb-5">
+  <h2 class="section-header text-center">Your Results</h2>
+  
+  <div class="row mt-4">
+    {% for index, product in search_results.iterrows() %}
+    {% set img_url = product['ImageURL'].split(' | ')[0] if product['ImageURL'] is string else 'https://via.placeholder.com/300' %}
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+      <a href="/product?name={{ product['Name']|urlencode }}" class="text-decoration-none text-dark">
+          <div class="card">
+              <img src="{{ img_url }}" class="card-img-top" alt="{{ product['Name'] }}">
+            <div class="card-body d-flex flex-column">
+              <div class="card-brand mb-1">{{ product['Brand'] }}</div>
+              <h5 class="card-title mb-3">{{ truncate(product['Name'], 45) }}</h5>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                  <span class="font-weight-bold" style="font-size: 1.2rem;">${{ (product['Name']|length % 60) + 15 }}.99</span>
+                  <span class="text-warning text-sm"><i class="fas fa-star"></i> {{ product['Rating'] }}</span>
+              </div>
+            </div>
+          </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<footer class="footer">
+    <div class="container text-center">
+        <h5 class="font-weight-bold mb-4"><i class="fas fa-box text-primary mr-2"></i>SmartCart AI</h5>
+        <div class="text-secondary small">
+            &copy; 2026 SmartCart Inc. All Rights Reserved.
+        </div>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +151,6 @@
     
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #FAFAFA; color: #0F172A; -webkit-font-smoothing: antialiased; }
-        
         .navbar { background: rgba(255, 255, 255, 0.85) !important; backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0, 0, 0, 0.05); padding: 15px 0; }
         .navbar-brand { font-weight: 800; font-size: 1.4rem; color: #0F172A !important; letter-spacing: -0.5px; }
         .nav-link { font-weight: 600; color: #475569 !important; margin: 0 10px; font-size: 0.95rem; }
@@ -18,80 +158,45 @@
 
         .btn-primary { background-color: #2563EB; border: none; border-radius: 50px; padding: 10px 28px; font-weight: 600; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); transition: all 0.3s ease; }
         .btn-primary:hover { background-color: #1D4ED8; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3); }
-        .btn-outline-primary { border: 2px solid #E2E8F0; color: #0F172A; border-radius: 50px; padding: 8px 26px; font-weight: 600; background: transparent; transition: all 0.3s ease; }
-        .btn-outline-primary:hover { border-color: #CBD5E1; background: #F1F5F9; }
+        .btn-outline-secondary { border-radius: 50px; padding: 8px 20px; font-weight: 600; }
 
-        /* --- THE NEW SEARCH HERO --- */
-        .search-wrapper {
-            background-color: #FFFFFF;
-            border-bottom: 1px solid #F1F5F9;
-            padding: 140px 0 80px;
-            text-align: center;
-        }
-        .search-title {
-            font-size: 3rem;
-            font-weight: 800;
-            letter-spacing: -1px;
-            color: #0F172A;
-            margin-bottom: 15px;
-        }
+        .search-wrapper { background-color: #FFFFFF; border-bottom: 1px solid #F1F5F9; padding: 120px 0 60px; text-align: center; }
+        .search-title { font-size: 3rem; font-weight: 800; letter-spacing: -1px; color: #0F172A; margin-bottom: 15px; }
         
-        /* Pill shaped search container */
-        .search-pill {
-            background: #FFFFFF;
-            border: 1px solid #E2E8F0;
-            border-radius: 100px;
-            padding: 8px;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
-            margin: 40px auto 0;
-            max-width: 800px;
-            transition: box-shadow 0.3s ease;
-        }
-        .search-pill:focus-within {
-            box-shadow: 0 10px 30px -5px rgba(37, 99, 235, 0.15);
-            border-color: #CBD5E1;
-        }
-        .search-pill .form-control {
-            border: none;
-            background: transparent;
-            font-size: 1.1rem;
-            padding: 15px 25px;
-            box-shadow: none !important;
-            color: #0F172A;
-        }
+        .search-pill { background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 100px; padding: 8px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); margin: 30px auto 0; max-width: 800px; transition: box-shadow 0.3s ease; }
+        .search-pill:focus-within { box-shadow: 0 10px 30px -5px rgba(37, 99, 235, 0.15); border-color: #CBD5E1; }
+        .search-pill .form-control { border: none; background: transparent; font-size: 1.1rem; padding: 15px 25px; box-shadow: none !important; color: #0F172A; }
         .search-pill .form-control::placeholder { color: #94A3B8; font-weight: 400; }
-        .search-divider { width: 1px; background-color: #E2E8F0; margin: 10px 0; }
 
-        /* --- PRODUCT CARDS (Same as index) --- */
-        .section-header { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.5px; color: #0F172A; margin: 60px 0 40px; }
+        .section-header { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.5px; color: #0F172A; margin: 40px 0 30px; }
         .card { border: 1px solid #F1F5F9; border-radius: 24px; background: #FFFFFF; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); transition: all 0.3s ease; height: 100%; }
-        .card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); border-color: #E2E8F0; }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); border-color: #E2E8F0; cursor: pointer; }
         .card-img-top { height: 240px; object-fit: contain; padding: 20px; background: #F8FAFC; }
         .card-body { padding: 24px; }
         .card-title { font-weight: 700; font-size: 1.1rem; color: #0F172A; margin-bottom: 8px; line-height: 1.4; }
         .card-brand { color: #64748B; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* Modals & Footer */
-        .modal-content { border: none; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
-        .modal-header { border-bottom: 1px solid #F1F5F9; padding: 24px 32px; }
-        .modal-body { padding: 32px; }
         .footer { background-color: #FFFFFF; border-top: 1px solid #F1F5F9; padding: 80px 0 40px; margin-top: 80px; }
         .footer h5 { font-weight: 700; color: #0F172A; margin-bottom: 24px; }
-        .footer a { color: #64748B; transition: color 0.2s; }
-        .footer a:hover { color: #2563EB; text-decoration: none; }
     </style>
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg fixed-top">
   <div class="container-fluid px-4 px-md-5">
-      <a class="navbar-brand" href="index">
-          <i class="fas fa-box text-primary mr-2"></i>SmartCart
+      <a class="navbar-brand" href="/">
+          <i class="fas fa-box text-primary mr-2"></i>SmartCart AI
       </a>
       <div class="collapse navbar-collapse justify-content-end">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav align-items-center">
           <li class="nav-item">
-              <a class="nav-link" href="index"><i class="fas fa-arrow-left mr-2"></i> Back to Home</a>
+              <a class="nav-link" href="/"><i class="fas fa-home mr-1"></i> Home</a>
+          </li>
+          <li class="nav-item ml-3">
+              <a href="/history" class="btn btn-outline-secondary btn-sm"><i class="fas fa-history"></i> History</a>
+          </li>
+          <li class="nav-item ml-2">
+              <a href="/cart" class="btn btn-primary btn-sm"><i class="fas fa-shopping-bag"></i> Cart ({{ session.get('cart', [])|length }})</a>
           </li>
         </ul>
       </div>
@@ -101,22 +206,26 @@
 <div class="search-wrapper">
     <div class="container">
         <h1 class="search-title">What are you looking for?</h1>
-        <p class="text-secondary" style="font-size: 1.1rem;">Search for a product, and we'll find the best matches.</p>
+        <p class="text-secondary" style="font-size: 1.1rem;">Search for a product or category, and we'll find the best matches.</p>
         
-        <form action="/recommendations" method="post" class="search-pill d-flex">
+        <form action="/search" method="post" class="search-pill d-flex">
             <div class="flex-grow-1 d-flex align-items-center">
                 <i class="fas fa-search text-secondary ml-4"></i>
-                <input type="text" class="form-control" name="prod" placeholder="E.g., Nail Lacquer, Lotion..." required>
+                <input type="text" class="form-control" name="query" placeholder="E.g., Shoes, Skincare..." value="{{ query|default('') }}" required>
             </div>
             
-            <div class="search-divider"></div>
-            
-            <div class="d-flex align-items-center" style="width: 180px;">
-                <i class="fas fa-list-ol text-secondary ml-3"></i>
-                <input type="number" class="form-control" name="nbr" placeholder="Results" required min="1">
+            <!-- <div class="d-flex align-items-center border-left pl-3" style="width: 150px;">
+                <select name="top_k" class="form-control border-0 bg-transparent font-weight-bold text-primary" style="cursor: pointer;">
+                    <option value="16">16 Items</option>
+                    <option value="32">32 Items</option>
+                    <option value="64">64 Items</option>
+                </select>
+            </div> -->
+            <div class="d-flex align-items-center border-left pl-3" style="width: 150px;">
+                <input type="number" name="top_k" class="form-control border-0 bg-transparent font-weight-bold text-primary" placeholder="Max: 10" min="1" style="box-shadow: none;">
             </div>
             
-            <button class="btn btn-primary ml-1" style="border-radius: 100px; padding: 0 30px;">
+            <button type="submit" class="btn btn-primary ml-2" style="border-radius: 100px; padding: 0 40px;">
                 Search
             </button>
         </form>
@@ -125,61 +234,41 @@
 
 {% if message %}
 <div class="container mt-5">
-    <div class="alert alert-warning alert-dismissible fade show text-center border-0 shadow-sm" style="border-radius: 16px; background: #FFFBEB; color: #92400E;">
+    <div class="alert alert-warning alert-dismissible fade show text-center border-0 shadow-sm py-3" style="border-radius: 16px; background: #FFFBEB; color: #92400E; font-weight: 500;">
       <i class="fas fa-exclamation-circle mr-2"></i> {{message}}
       <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
     </div>
 </div>
 {% endif %}
 
-{% if content_based_rec is defined and not content_based_rec.empty %}
-<div class="container pb-5">
-  <h2 class="section-header text-center">Your Recommendations</h2>
+{% if search_results is defined and not search_results.empty %}
+<div class="container pb-5 mt-4">
+  
+  <div class="d-flex justify-content-between align-items-center mb-2">
+      <a href="javascript:history.back()" class="btn btn-light rounded-pill px-4 font-weight-bold text-secondary shadow-sm">
+          <i class="fas fa-arrow-left mr-2"></i> Go Back
+      </a>
+  </div>
+
+  <h2 class="section-header text-center mt-0">Top Rated Results</h2>
   
   <div class="row mt-4">
-    {% for index, product in content_based_rec.iterrows() %}
+    {% for index, product in search_results.iterrows() %}
+    {% set img_url = product['ImageURL'].split(' | ')[0] if product['ImageURL'] is string else 'https://via.placeholder.com/300' %}
     <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-      <div class="card">
-          <img src="{{ product['ImageURL'] }}" class="card-img-top" alt="Product">
-        <div class="card-body d-flex flex-column">
-          <div class="card-brand mb-1">{{ product['Brand'] }}</div>
-          <h5 class="card-title mb-4">{{ truncate(product['Name'], 45) }}</h5>
-          <button type="button" class="btn btn-outline-primary mt-auto w-100" data-toggle="modal" data-target="#productModal{{ index }}">
-              Quick View
-          </button>
-        </div>
-      </div>
-    </div>
-    
-    <div class="modal fade" id="productModal{{ index }}" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header pb-0 border-0">
-            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-          </div>
-          <div class="modal-body pt-0">
-            <div class="row align-items-center">
-              <div class="col-md-5 mb-4 mb-md-0 text-center">
-                  <div style="background: #F8FAFC; border-radius: 20px; padding: 20px;">
-                      <img src="{{ product['ImageURL'] }}" class="img-fluid" style="max-height: 300px; mix-blend-mode: multiply;">
-                  </div>
-              </div>
-              <div class="col-md-7 pl-md-4">
-                <p class="text-uppercase font-weight-bold text-primary mb-2" style="letter-spacing: 1px; font-size: 0.85rem;">{{ product['Brand'] }}</p>
-                <h3 class="font-weight-bold mb-3 text-dark">{{ product['Name'] }}</h3>
-                <h2 class="mb-4 font-weight-bold text-dark">${{ random_price }}.00</h2>
-                
-                <div class="d-flex align-items-center mb-4 text-secondary">
-                    <div class="mr-4"><i class="fas fa-star text-warning mr-1"></i> <strong>{{ product['Rating'] }}</strong>/5</div>
-                    <div><i class="fas fa-comment mr-1"></i> {{ product['ReviewCount'] }} Reviews</div>
-                </div>
-                
-                <button type="button" class="btn btn-primary btn-lg w-100 py-3 rounded-pill"><i class="fas fa-shopping-bag mr-2"></i> Add to Bag</button>
+      <a href="/product?name={{ product['Name']|urlencode }}" class="text-decoration-none text-dark">
+          <div class="card">
+              <img src="{{ img_url }}" class="card-img-top" alt="{{ product['Name'] }}">
+            <div class="card-body d-flex flex-column">
+              <div class="card-brand mb-1">{{ product['Brand'] }}</div>
+              <h5 class="card-title mb-3">{{ truncate(product['Name'], 45) }}</h5>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                  <span class="font-weight-bold" style="font-size: 1.2rem;">₹{{ (product['Name']|length % 60) * 80 + 499 }}</span>
+                  <span class="text-warning font-weight-bold text-sm"><i class="fas fa-star"></i> {{ product['Rating'] }}</span>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+      </a>
     </div>
     {% endfor %}
   </div>
@@ -188,9 +277,9 @@
 
 <footer class="footer">
     <div class="container text-center">
-        <h5 class="font-weight-bold mb-4"><i class="fas fa-box text-primary mr-2"></i>SmartCart</h5>
+        <h5 class="font-weight-bold mb-4"><i class="fas fa-box text-primary mr-2"></i>SmartCart AI</h5>
         <div class="text-secondary small">
-            &copy; 2024 SmartCart Inc. All Rights Reserved.
+            &copy; 2026 SmartCart Inc. All Rights Reserved.
         </div>
     </div>
 </footer>

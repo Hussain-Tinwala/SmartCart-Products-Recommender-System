@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product['Name'] }} - SmartCart</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .navbar { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .product-card { border: none; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: transform 0.2s; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .image-container { background: white; border-radius: 20px; padding: 30px; text-align: center; border: 1px solid #eee; }
+        .btn-primary { background: #2563eb; border: none; }
+        .btn-primary:hover { background: #1d4ed8; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top py-3">
+        <div class="container">
+            <a class="navbar-brand font-weight-bold" href="/"><i class="fas fa-shopping-cart text-primary"></i> SmartCart AI</a>
+            <div class="ml-auto">
+                <a href="/history" class="btn btn-outline-secondary btn-sm mr-2"><i class="fas fa-history"></i> History</a>
+                <a href="/cart" class="btn btn-primary btn-sm"><i class="fas fa-shopping-bag"></i> Cart ({{ session.get('cart', [])|length }})</a>
+            </div>
+        </div>
+    </nav>
+
+    {% set main_img = product['ImageURL'].split(' | ')[0] if product['ImageURL'] is string else 'https://via.placeholder.com/400' %}
+
+    <div class="container mt-5">
+        <div class="mb-4">
+            <a href="javascript:history.back()" class="btn btn-light rounded-pill px-4 font-weight-bold text-secondary shadow-sm">
+                <i class="fas fa-arrow-left mr-2"></i> Back to Results
+            </a>
+        </div>
+        <div class="row mb-5 align-items-center">
+            <div class="col-md-6 mb-4">
+                <div class="image-container">
+                    <img src="{{ main_img }}" class="img-fluid rounded" alt="{{ product['Name'] }}" style="max-height: 400px;">
+                </div>
+            </div>
+            <div class="col-md-6 pl-md-5">
+                <p class="text-uppercase text-primary font-weight-bold mb-1" style="letter-spacing: 1px;">{{ product['Brand'] }}</p>
+                <h2 class="font-weight-bold text-dark mb-3">{{ product['Name'] }}</h2>
+                <h3 class="font-weight-bold mb-3">₹{{ (product['Name']|length % 60) * 80 + 499 }}</h3>
+                
+                <div class="d-flex align-items-center mb-4 text-secondary">
+                    <div class="mr-3"><i class="fas fa-star text-warning"></i> <strong>{{ product['Rating'] }}</strong>/5</div>
+                    <div><i class="fas fa-comment"></i> {{ product['ReviewCount'] }} Reviews</div>
+                </div>
+
+                <form action="/add_to_cart" method="POST">
+                    <input type="hidden" name="name" value="{{ product['Name'] }}">
+                    <button type="submit" class="btn btn-primary btn-lg w-100 py-3 rounded-pill shadow-sm">
+                        <i class="fas fa-plus mr-2"></i> Add to Bag
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <hr class="my-5">
+        <h4 class="font-weight-bold mb-4">Customers who viewed this also viewed</h4>
+        <div class="row">
+            {% if not similar_items.empty %}
+                {% for index, sim_product in similar_items.iterrows() %}
+                {% set sim_img = sim_product['ImageURL'].split(' | ')[0] if sim_product['ImageURL'] is string else 'https://via.placeholder.com/300' %}
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <a href="/product?name={{ sim_product['Name']|urlencode }}" class="text-decoration-none text-dark">
+                        <div class="card product-card h-100">
+                            <img src="{{ sim_img }}" class="card-img-top p-3" alt="{{ sim_product['Name'] }}" style="height: 200px; object-fit: contain;">
+                            <div class="card-body d-flex flex-column">
+                                <div class="text-muted small mb-1">{{ sim_product['Brand'] }}</div>
+                                <h6 class="card-title">{{ truncate(sim_product['Name'], 40) }}</h6>
+                                <div class="mt-auto font-weight-bold">₹{{ (product['Name']|length % 60) * 80 + 499 }}</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12"><p class="text-muted">No similar items found in the database.</p></div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
